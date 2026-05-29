@@ -71,4 +71,51 @@ router.put('/students/:id/premium', adminAuthMiddleware, async (req, res) => {
   res.json({ success: true });
 });
 
+router.get('/subjects', adminAuthMiddleware, async (req, res) => {
+  const classLevel = parseInt(req.query.class) || 3;
+  const db = await getDb();
+  const subjects = all(db, `
+    SELECT s.*, COUNT(c.id) as chapter_count
+    FROM subjects s LEFT JOIN chapters c ON c.subject_id = s.id
+    WHERE s.class_level = ? GROUP BY s.id ORDER BY s.order_num
+  `, [classLevel]);
+  res.json({ subjects });
+});
+
+router.post('/subjects', adminAuthMiddleware, async (req, res) => {
+  const { name, class_level, icon, color } = req.body;
+  if (!name || !class_level) return res.status(400).json({ error: 'Name and class_level required' });
+  const db = await getDb();
+  const maxOrder = get(db, 'SELECT MAX(order_num) as m FROM subjects WHERE class_level = ?', [class_level]);
+  const order_num = (maxOrder?.m || 0) + 1;
+  const id = insert(db, 'INSERT INTO subjects (name, class_level, icon, color, order_num) VALUES (?,?,?,?,?)',
+    [name, class_level, icon || 'book-open', color || '#1B3A6B', order_num]);
+  saveDb();
+  res.json({ success: true, id });
+});
+
+router.post('/chapters', adminAuthMiddleware, async (req, res) => {
+  const { subject_id, name } = req.body;
+  if (!subject_id || !name) return res.status(400).json({ error: 'subject_id and name required' });
+  const db = await getDb();
+  const maxOrder = get(db, 'SELECT MAX(order_num) as m FROM chapters WHERE subject_id = ?', [subject_id]);
+  const order_num = (maxOrder?.m || 0) + 1;
+  const id = insert(db, 'INSERT INTO chapters (subject_id, name, order_num) VALUES (?,?,?)',
+    [subject_id, name, order_num]);
+  saveDb();
+  res.json({ success: true, id });
+});
+
+router.post('/questions', adminAuthMiddleware, async (req, res) => {
+  const { chapter_id, question_text, option_a, option_b, option_c, option_d, correct_answer, is_premium, type } = req.body;
+  if (!chapter_id || !question_text || !option_a || !option_b || !correct_answer)
+    return res.status(400).json({ error: 'Missing required fields' });
+  const db = await getDb();
+  const id = insert(db,
+    'INSERT INTO questions (chapter_id, question_text, option_a, option_b, option_c, option_d, correct_answer, is_premium, type) VALUES (?,?,?,?,?,?,?,?,?)',
+    [chapter_id, question_text, option_a, option_b, option_c || null, option_d || null, correct_answer, is_premium || 0, type || 'mcq']);
+  saveDb();
+  res.json({ success: true, id });
+});
+
 module.exports = router;

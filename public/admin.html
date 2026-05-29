@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Study Sikkim Admin</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F4F6F9;color:#1A1A2E}
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1B3A6B;padding:24px}
+.login-card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
+.login-logo{text-align:center;margin-bottom:24px}
+.login-logo .ss{width:72px;height:72px;background:#E8800A;border-radius:18px;font-size:26px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+.login-logo h1{font-size:22px;font-weight:900;color:#1A1A2E}
+.login-logo p{font-size:13px;color:#9CA3AF;margin-top:4px}
+label{font-size:12px;font-weight:700;color:#4B5563;display:block;margin:12px 0 4px}
+input[type=text],input[type=password]{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:10px 14px;font-size:15px;outline:none;transition:.15s}
+input:focus{border-color:#1B3A6B}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;transition:.15s}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.btn-primary{background:#1B3A6B;color:#fff}
+.btn-danger{background:#E74C3C;color:#fff}
+.btn-success{background:#27AE60;color:#fff}
+.btn-sm{height:32px;font-size:12px;padding:0 12px;width:auto;margin:0}
+.error-msg{background:#FDECEA;color:#E74C3C;border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px}
+
+/* App shell */
+#app{display:none;min-height:100vh}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:#1B3A6B;display:flex;flex-direction:column;z-index:10}
+.sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo .ss{width:44px;height:44px;background:#E8800A;border-radius:12px;font-size:16px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
+.sidebar-logo h2{font-size:16px;font-weight:900;color:#fff}
+.sidebar-logo p{font-size:11px;color:rgba(255,255,255,.5)}
+nav{flex:1;padding:16px 0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:rgba(255,255,255,.65);font-size:14px;font-weight:600;cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#E8800A}
+.nav-item .icon{font-size:16px;width:20px;text-align:center}
+.sidebar-bottom{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
+.signout-btn{background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.65);padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;font-weight:600}
+.signout-btn:hover{background:rgba(255,255,255,.15);color:#fff}
+
+.main{margin-left:220px;padding:24px;min-height:100vh}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.page-header h1{font-size:22px;font-weight:900;color:#1A1A2E}
+.section{display:none}
+.section.active{display:block}
+
+/* Stats grid */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.stat-value{font-size:28px;font-weight:900;color:#1B3A6B;margin-bottom:4px}
+.stat-label{font-size:13px;color:#9CA3AF;font-weight:600}
+.stat-icon{font-size:28px;margin-bottom:8px}
+
+/* Table */
+.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.card-title{font-size:16px;font-weight:800;color:#1A1A2E}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 12px;font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;border-bottom:2px solid #F3F4F6}
+td{padding:10px 12px;border-bottom:1px solid #F9FAFB;color:#1A1A2E}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#F9FAFB}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-gold{background:rgba(212,175,55,.15);color:#D4AF37}
+.badge-green{background:#D4EDDA;color:#27AE60}
+.badge-gray{background:#F3F4F6;color:#9CA3AF}
+
+/* Class bar chart */
+.class-bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.class-row{display:flex;align-items:center;gap:10px;font-size:13px}
+.class-label{width:60px;font-weight:700;color:#4B5563}
+.bar-track{flex:1;background:#F3F4F6;border-radius:6px;height:20px;overflow:hidden}
+.bar-fill{height:100%;background:#1B3A6B;border-radius:6px;transition:.6s}
+.bar-count{width:32px;text-align:right;font-weight:700;color:#1B3A6B;font-size:12px}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-group{display:flex;flex-direction:column;gap:4px}
+.form-group.full{grid-column:1/-1}
+.form-group label{font-size:12px;font-weight:700;color:#4B5563}
+.form-group input,.form-group select,.form-group textarea{border:1.5px solid #E5E7EB;border-radius:8px;padding:8px 12px;font-size:14px;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#1B3A6B}
+.form-actions{display:flex;gap:8px;margin-top:16px}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tab-bar{display:flex;gap:4px;background:#F4F6F9;border-radius:10px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#9CA3AF;transition:.15s}
+.tab.active{background:#fff;color:#1B3A6B;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.empty{text-align:center;padding:48px;color:#9CA3AF;font-size:14px}
+select.filter{border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 12px;font-size:13px;outline:none;background:#fff}
+.pagination{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:12px;font-size:13px}
+.page-btn{border:1.5px solid #E5E7EB;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:13px}
+.page-btn:disabled{opacity:.4;cursor:not-allowed}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="ss">SS</div>
+      <h1>Admin Dashboard</h1>
+      <p>Study Sikkim · Management Console</p>
+    </div>
+    <label>Username</label>
+    <input type="text" id="username" placeholder="admin" />
+    <label>Password</label>
+    <input type="password" id="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
+    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div class="error-msg" id="login-error" style="display:none"></div>
+  </div>
+</div>
+
+<!-- APP SHELL -->
+<div id="app">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <div class="ss">SS</div>
+      <h2>Study Sikkim</h2>
+      <p>Admin Console</p>
+    </div>
+    <nav>
+      <div class="nav-item active" onclick="showSection('dashboard')"><span class="icon">📊</span> Dashboard</div>
+      <div class="nav-item" onclick="showSection('students')"><span class="icon">👥</span> Students</div>
+      <div class="nav-item" onclick="showSection('attempts')"><span class="icon">📝</span> Quiz Attempts</div>
+      <div class="nav-item" onclick="showSection('content')"><span class="icon">📚</span> Content</div>
+    </nav>
+    <div class="sidebar-bottom">
+      <button class="signout-btn" onclick="signOut()">↩ Sign Out</button>
+    </div>
+  </div>
+
+  <div class="main">
+    <!-- DASHBOARD -->
+    <div class="section active" id="sec-dashboard">
+      <div class="page-header"><h1>📊 Dashboard</h1></div>
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="s-students">—</div><div class="stat-label">Total Students</div></div>
+        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="s-premium">—</div><div class="stat-label">Premium Students</div></div>
+        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-value" id="s-quizzes">—</div><div class="stat-label">Quizzes Taken</div></div>
+        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="s-revenue">—</div><div class="stat-label">Total Revenue</div></div>
+      </div>
+      <div class="card">
+        <div class="card-header"><span class="card-title">Students by Class</span></div>
+        <div class="class-bars" id="class-bars"><div class="empty">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- STUDENTS -->
+    <div class="section" id="sec-students">
+      <div class="page-header">
+        <h1>👥 Students</h1>
+        <select class="filter" id="class-filter" onchange="loadStudents(1)">
+          <option value="">All Classes</option>
+          <option value="3">Class 3</option><option value="4">Class 4</option>
+          <option value="5">Class 5</option><option value="6">Class 6</option>
+          <option value="7">Class 7</option><option value="8">Class 8</option>
+          <option value="9">Class 9</option><option value="10">Class 10</option>
+          <option value="11">Class 11</option><option value="12">Class 12</option>
+        </select>
+      </div>
+      <div class="card">
+        <table id="students-table">
+          <thead><tr><th>Name</th><th>Email</th><th>Class</th><th>School</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
+          <tbody id="students-body"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+        </table>
+        <div class="pagination">
+          <button class="page-btn" id="prev-btn" onclick="loadStudents(currentPage-1)" disabled>← Prev</button>
+          <span id="page-info">Page 1</span>
+          <button class="page-btn" id="next-btn" onclick="loadStudents(currentPage+1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ATTEMPTS -->
+    <div class="section" id="sec-attempts">
+      <div class="page-header"><h1>📝 Quiz Attempts</h1></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Chapter</th><th>Score</th><th>Time</th><th>Date</th></tr></thead>
+          <tbody id="attempts-body"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="section" id="sec-content">
+      <div class="page-header"><h1>📚 Content</h1></div>
+      <div class="tab-bar">
+        <button class="tab active" onclick="showTab('subjects')">Subjects</button>
+        <button class="tab" onclick="showTab('chapters')">Chapters</button>
+        <button class="tab" onclick="showTab('questions')">Questions</button>
+      </div>
+
+      <!-- Subjects tab -->
+      <div id="tab-subjects">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Add Subject</span></div>
+          <div class="form-grid">
+            <div class="form-group"><label>Name</label><input id="sub-name" placeholder="e.g. Mathematics" /></div>
+            <div class="form-group"><label>Class Level</label>
+              <select id="sub-class"><option value="">Select class</option>
+                <option>3</option><option>4</option><option>5</option><option>6</option>
+                <option>7</option><option>8</option><option>9</option><option>10</option>
+                <option>11</option><option>12</option>
+              </select>
+            </div>
+            <div class="form-group"><label>Icon (name)</label><input id="sub-icon" placeholder="book-open" /></div>
+            <div class="form-group"><label>Color (hex)</label><input id="sub-color" placeholder="#1B3A6B" /></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" onclick="addSubject()">+ Add Subject</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header"><span class="card-title">Subjects</span>
+            <select class="filter" id="subj-class-filter" onchange="loadSubjectsList()">
+              <option value="3">Class 3</option><option value="4">Class 4</option>
+              <option value="5">Class 5</option><option value="6">Class 6</option>
+              <option value="7">Class 7</option><option value="8">Class 8</option>
+              <option value="9">Class 9</option><option value="10">Class 10</option>
+              <option value="11">Class 11</option><option value="12">Class 12</option>
+            </select>
+          </div>
+          <div id="subjects-list"><div class="empty">Select a class to view subjects</div></div>
+        </div>
+      </div>
+
+      <!-- Chapters tab -->
+      <div id="tab-chapters" style="display:none">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Add Chapter</span></div>
+          <div class="form-grid">
+            <div class="form-group full"><label>Subject ID</label><input id="ch-subject" placeholder="Subject ID (from subjects list)" type="number" /></div>
+            <div class="form-group full"><label>Chapter Name</label><input id="ch-name" placeholder="e.g. Chapter 1: Numbers" /></div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" onclick="addChapter()">+ Add Chapter</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions tab -->
+      <div id="tab-questions" style="display:none">
+        <div class="card">
+          <div class="card-header"><span class="card-title">Add Question</span></div>
+          <div class="form-grid">
+            <div class="form-group full"><label>Chapter ID</label><input id="q-chapter" placeholder="Chapter ID" type="number" /></div>
+            <div class="form-group full"><label>Question Text</label><textarea id="q-text" rows="3" placeholder="Enter the question..."></textarea></div>
+            <div class="form-group"><label>Option A</label><input id="q-a" /></div>
+            <div class="form-group"><label>Option B</label><input id="q-b" /></div>
+            <div class="form-group"><label>Option C</label><input id="q-c" /></div>
+            <div class="form-group"><label>Option D</label><input id="q-d" /></div>
+            <div class="form-group"><label>Correct Answer</label>
+              <select id="q-correct"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
+            </div>
+            <div class="form-group"><label>Type</label>
+              <select id="q-premium"><option value="0">Free</option><option value="1">Premium</option></select>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="btn btn-primary btn-sm" onclick="addQuestion()">+ Add Question</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = '';
+let token = localStorage.getItem('adminToken') || '';
+let currentPage = 1;
+let totalPages = 1;
+
+if (token) initApp();
+
+async function api(path, opts={}) {
+  const r = await fetch(API + path, {
+    ...opts,
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts.headers||{}) }
+  });
+  if (r.status === 401) { signOut(); return null; }
+  return r.json();
+}
+
+async function doLogin() {
+  const btn = document.getElementById('login-btn');
+  const err = document.getElementById('login-error');
+  const u = document.getElementById('username').value.trim();
+  const p = document.getElementById('password').value;
+  if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display='block'; return; }
+  btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true; err.style.display='none';
+  const data = await fetch(API + '/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:u, password:p}) }).then(r=>r.json()).catch(()=>null);
+  if (!data || !data.token) {
+    err.textContent = data?.error || 'Login failed'; err.style.display='block';
+    btn.innerHTML='Sign In'; btn.disabled=false; return;
+  }
+  token = data.token; localStorage.setItem('adminToken', token);
+  initApp();
+}
+
+function initApp() {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  loadDashboard();
+}
+
+function signOut() {
+  localStorage.removeItem('adminToken'); token='';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('app').style.display='none';
+}
+
+function showSection(name) {
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('sec-'+name).classList.add('active');
+  event.currentTarget.classList.add('active');
+  if (name==='students') loadStudents(1);
+  if (name==='attempts') loadAttempts();
+  if (name==='content') loadSubjectsList();
+}
+
+function showTab(name) {
+  ['subjects','chapters','questions'].forEach(t => {
+    document.getElementById('tab-'+t).style.display = t===name ? 'block' : 'none';
+  });
+  document.querySelectorAll('.tab').forEach((t,i) => {
+    t.classList.toggle('active', ['subjects','chapters','questions'][i]===name);
+  });
+}
+
+async function loadDashboard() {
+  const data = await api('/api/admin/stats');
+  if (!data) return;
+  document.getElementById('s-students').textContent = data.total_students;
+  document.getElementById('s-premium').textContent = data.premium_students;
+  document.getElementById('s-quizzes').textContent = data.total_quizzes;
+  document.getElementById('s-revenue').textContent = '₹' + (data.total_revenue || 0).toLocaleString();
+  const max = Math.max(...(data.by_class||[]).map(c=>c.count), 1);
+  const bars = document.getElementById('class-bars');
+  bars.innerHTML = (data.by_class||[]).map(c=>`
+    <div class="class-row">
+      <span class="class-label">Class ${c.class_level}</span>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c.count/max*100)}%"></div></div>
+      <span class="bar-count">${c.count}</span>
+    </div>`).join('') || '<div class="empty">No data yet</div>';
+}
+
+async function loadStudents(page=1) {
+  currentPage = page;
+  const cls = document.getElementById('class-filter').value;
+  const url = '/api/admin/students?page='+page+(cls?'&class='+cls:'');
+  const data = await api(url);
+  if (!data) return;
+  totalPages = data.pages || 1;
+  document.getElementById('page-info').textContent = `Page ${data.page} of ${totalPages}`;
+  document.getElementById('prev-btn').disabled = page <= 1;
+  document.getElementById('next-btn').disabled = page >= totalPages;
+  const tbody = document.getElementById('students-body');
+  if (!data.students?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty">No students found</td></tr>'; return; }
+  tbody.innerHTML = data.students.map(s=>`
+    <tr>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.email}</td>
+      <td>Class ${s.class_level}</td>
+      <td>${s.school||'—'}</td>
+      <td><span class="badge ${s.is_premium?'badge-gold':'badge-gray'}">${s.is_premium?'⭐ Premium':'Free'}</span></td>
+      <td>${new Date(s.created_at).toLocaleDateString()}</td>
+      <td>
+        ${s.is_premium
+          ? `<button class="btn btn-sm" style="background:#FEF3C7;color:#F59E0B;border:none" onclick="togglePremium(${s.id},false)">Revoke</button>`
+          : `<button class="btn btn-success btn-sm" onclick="togglePremium(${s.id},true)">+ Premium</button>`
+        }
+      </td>
+    </tr>`).join('');
+}
+
+async function togglePremium(id, grant) {
+  await api('/api/admin/students/'+id+'/premium', { method:'PUT', body: JSON.stringify({ is_premium: grant, days: grant?365:0 }) });
+  loadStudents(currentPage);
+}
+
+async function loadAttempts() {
+  const data = await api('/api/admin/attempts');
+  if (!data) return;
+  const tbody = document.getElementById('attempts-body');
+  if (!data.attempts?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty">No attempts yet</td></tr>'; return; }
+  tbody.innerHTML = data.attempts.map(a=>{
+    const pct = a.total > 0 ? Math.round(a.score/a.total*100) : 0;
+    const color = pct>=70?'#27AE60':pct>=50?'#F59E0B':'#E74C3C';
+    const mins = Math.floor(a.time_taken_seconds/60);
+    const secs = a.time_taken_seconds%60;
+    return `<tr>
+      <td><strong>${a.student_name}</strong></td>
+      <td>Class ${a.class_level}</td>
+      <td>${a.subject_name}</td>
+      <td>${a.chapter_name}</td>
+      <td><strong style="color:${color}">${pct}%</strong> <span style="color:#9CA3AF;font-size:11px">${a.score}/${a.total}</span></td>
+      <td>${mins}m ${secs}s</td>
+      <td>${new Date(a.completed_at).toLocaleDateString()}</td>
+    </tr>`;
+  }).join('');
+}
+
+async function loadSubjectsList() {
+  const cls = document.getElementById('subj-class-filter').value || 3;
+  const data = await api('/api/admin/subjects?class='+cls);
+  const el = document.getElementById('subjects-list');
+  if (!data?.subjects?.length) { el.innerHTML='<div class="empty">No subjects for this class</div>'; return; }
+  el.innerHTML = `<table><thead><tr><th>ID</th><th>Name</th><th>Icon</th><th>Color</th><th>Chapters</th></tr></thead><tbody>
+    ${data.subjects.map(s=>`<tr>
+      <td><code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:12px">${s.id}</code></td>
+      <td><strong>${s.name}</strong></td>
+      <td>${s.icon||'—'}</td>
+      <td><span style="display:inline-block;width:16px;height:16px;background:${s.color};border-radius:4px;vertical-align:middle;margin-right:6px"></span>${s.color}</td>
+      <td>${s.chapter_count}</td>
+    </tr>`).join('')}
+  </tbody></table>`;
+}
+
+async function addSubject() {
+  const name=document.getElementById('sub-name').value.trim();
+  const cls=document.getElementById('sub-class').value;
+  const icon=document.getElementById('sub-icon').value.trim()||'book-open';
+  const color=document.getElementById('sub-color').value.trim()||'#1B3A6B';
+  if(!name||!cls){alert('Name and class are required');return;}
+  const r = await api('/api/admin/subjects',{method:'POST',body:JSON.stringify({name,class_level:parseInt(cls),icon,color})});
+  if(r?.success){
+    ['sub-name','sub-icon','sub-color'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('sub-class').value='';
+    document.getElementById('subj-class-filter').value=cls;
+    loadSubjectsList();
+    alert('Subject added!');
+  } else { alert(r?.error||'Failed to add subject'); }
+}
+
+async function addChapter() {
+  const subjectId=parseInt(document.getElementById('ch-subject').value);
+  const name=document.getElementById('ch-name').value.trim();
+  if(!subjectId||!name){alert('Subject ID and name required');return;}
+  const r = await api('/api/admin/chapters',{method:'POST',body:JSON.stringify({subject_id:subjectId,name})});
+  if(r?.success){document.getElementById('ch-name').value='';alert('Chapter added!');}
+  else{alert(r?.error||'Failed');}
+}
+
+async function addQuestion() {
+  const chapter_id=parseInt(document.getElementById('q-chapter').value);
+  const question_text=document.getElementById('q-text').value.trim();
+  const option_a=document.getElementById('q-a').value.trim();
+  const option_b=document.getElementById('q-b').value.trim();
+  const option_c=document.getElementById('q-c').value.trim();
+  const option_d=document.getElementById('q-d').value.trim();
+  const correct_answer=document.getElementById('q-correct').value;
+  const is_premium=parseInt(document.getElementById('q-premium').value);
+  if(!chapter_id||!question_text||!option_a||!option_b||!option_c||!option_d){alert('All fields required');return;}
+  const r = await api('/api/admin/questions',{method:'POST',body:JSON.stringify({chapter_id,question_text,option_a,option_b,option_c,option_d,correct_answer,is_premium,type:'mcq'})});
+  if(r?.success){['q-text','q-a','q-b','q-c','q-d'].forEach(id=>document.getElementById(id).value='');alert('Question added!');}
+  else{alert(r?.error||'Failed');}
+}
+</script>
+</body>
+</html>
