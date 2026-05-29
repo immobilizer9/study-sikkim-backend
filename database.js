@@ -1,4 +1,4 @@
-const initSqlJs = require('sql.js');
+const initSqlJs = require('sql.js/dist/sql-asm.js');
 const path = require('path');
 const fs = require('fs');
 const bcrypt = require('bcryptjs');
