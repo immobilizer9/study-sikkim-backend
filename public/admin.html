@@ -1,99 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Study Sikkim Admin</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F4F6F9;color:#1A1A2E}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#F4F6F9;color:#1A1A2E;font-size:14px}
+/* Login */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:#1B3A6B;padding:24px}
-.login-card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.2)}
-.login-logo{text-align:center;margin-bottom:24px}
-.login-logo .ss{width:72px;height:72px;background:#E8800A;border-radius:18px;font-size:26px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
-.login-logo h1{font-size:22px;font-weight:900;color:#1A1A2E}
-.login-logo p{font-size:13px;color:#9CA3AF;margin-top:4px}
-label{font-size:12px;font-weight:700;color:#4B5563;display:block;margin:12px 0 4px}
-input[type=text],input[type=password]{width:100%;border:1.5px solid #E5E7EB;border-radius:10px;padding:10px 14px;font-size:15px;outline:none;transition:.15s}
-input:focus{border-color:#1B3A6B}
-.btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;height:48px;border:none;border-radius:12px;font-size:15px;font-weight:700;cursor:pointer;margin-top:16px;transition:.15s}
-.btn:active{transform:scale(.98)}
-.btn:disabled{opacity:.6;cursor:not-allowed}
-.btn-primary{background:#1B3A6B;color:#fff}
-.btn-danger{background:#E74C3C;color:#fff}
-.btn-success{background:#27AE60;color:#fff}
-.btn-sm{height:32px;font-size:12px;padding:0 12px;width:auto;margin:0}
-.error-msg{background:#FDECEA;color:#E74C3C;border-radius:10px;padding:10px 14px;font-size:13px;margin-top:12px}
-
-/* App shell */
-#app{display:none;min-height:100vh}
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:220px;background:#1B3A6B;display:flex;flex-direction:column;z-index:10}
-.sidebar-logo{padding:24px 20px 16px;border-bottom:1px solid rgba(255,255,255,.1)}
-.sidebar-logo .ss{width:44px;height:44px;background:#E8800A;border-radius:12px;font-size:16px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin-bottom:8px}
-.sidebar-logo h2{font-size:16px;font-weight:900;color:#fff}
-.sidebar-logo p{font-size:11px;color:rgba(255,255,255,.5)}
-nav{flex:1;padding:16px 0}
-.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;color:rgba(255,255,255,.65);font-size:14px;font-weight:600;cursor:pointer;transition:.15s;border-left:3px solid transparent}
+.login-card{background:#fff;border-radius:20px;padding:32px;width:100%;max-width:380px;box-shadow:0 8px 32px rgba(0,0,0,.25)}
+.logo-circle{width:72px;height:72px;background:#E8800A;border-radius:18px;font-size:24px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;margin:0 auto 12px}
+/* Layout */
+#app{display:none;min-height:100vh;display:none}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:230px;background:#1B3A6B;display:flex;flex-direction:column;z-index:20;overflow-y:auto}
+.sb-logo{padding:20px;border-bottom:1px solid rgba(255,255,255,.1);display:flex;align-items:center;gap:10px}
+.sb-logo .dot{width:40px;height:40px;background:#E8800A;border-radius:10px;font-size:16px;font-weight:900;color:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sb-logo h2{font-size:15px;font-weight:900;color:#fff}
+.sb-logo p{font-size:11px;color:rgba(255,255,255,.5)}
+nav{flex:1;padding:8px 0}
+.nav-section{font-size:10px;font-weight:800;color:rgba(255,255,255,.35);padding:12px 20px 4px;text-transform:uppercase;letter-spacing:.8px}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.65);font-size:13px;font-weight:600;cursor:pointer;transition:.15s;border-left:3px solid transparent}
 .nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
 .nav-item.active{background:rgba(255,255,255,.12);color:#fff;border-left-color:#E8800A}
-.nav-item .icon{font-size:16px;width:20px;text-align:center}
-.sidebar-bottom{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1)}
-.signout-btn{background:rgba(255,255,255,.08);border:none;color:rgba(255,255,255,.65);padding:8px 14px;border-radius:8px;font-size:13px;cursor:pointer;width:100%;font-weight:600}
-.signout-btn:hover{background:rgba(255,255,255,.15);color:#fff}
-
-.main{margin-left:220px;padding:24px;min-height:100vh}
-.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-.page-header h1{font-size:22px;font-weight:900;color:#1A1A2E}
-.section{display:none}
-.section.active{display:block}
-
-/* Stats grid */
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-bottom:24px}
-.stat-card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06)}
-.stat-value{font-size:28px;font-weight:900;color:#1B3A6B;margin-bottom:4px}
-.stat-label{font-size:13px;color:#9CA3AF;font-weight:600}
-.stat-icon{font-size:28px;margin-bottom:8px}
-
+.sb-bottom{padding:16px;border-top:1px solid rgba(255,255,255,.1)}
+.main{margin-left:230px;padding:24px;min-height:100vh}
+/* Sections */
+.section{display:none}.section.active{display:block}
+/* Tabs */
+.page-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:8px}
+.page-hdr h1{font-size:20px;font-weight:900}
+.tab-bar{display:flex;gap:4px;background:#E9EDF2;border-radius:10px;padding:4px;margin-bottom:20px}
+.tab{flex:1;padding:8px 12px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#9CA3AF;transition:.15s;white-space:nowrap}
+.tab.active{background:#fff;color:#1B3A6B;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+/* Cards */
+.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
+.card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+.card-title{font-size:15px;font-weight:800}
+/* Stats */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:20px}
+.stat-card{background:#fff;border-radius:12px;padding:16px;box-shadow:0 2px 8px rgba(0,0,0,.06);border-left:4px solid #1B3A6B}
+.stat-card.green{border-left-color:#27AE60}.stat-card.orange{border-left-color:#E8800A}.stat-card.purple{border-left-color:#7C3AED}
+.stat-val{font-size:24px;font-weight:900;color:#1A1A2E}.stat-lbl{font-size:11px;color:#9CA3AF;font-weight:600;margin-top:2px}
 /* Table */
-.card{background:#fff;border-radius:14px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
-.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-.card-title{font-size:16px;font-weight:800;color:#1A1A2E}
-table{width:100%;border-collapse:collapse;font-size:13px}
-th{text-align:left;padding:8px 12px;font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;border-bottom:2px solid #F3F4F6}
-td{padding:10px 12px;border-bottom:1px solid #F9FAFB;color:#1A1A2E}
+.tbl-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse}
+th{text-align:left;padding:8px 12px;font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;border-bottom:2px solid #F3F4F6;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #F9FAFB;vertical-align:middle}
 tr:last-child td{border-bottom:none}
-tr:hover td{background:#F9FAFB}
-.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
-.badge-gold{background:rgba(212,175,55,.15);color:#D4AF37}
-.badge-green{background:#D4EDDA;color:#27AE60}
-.badge-gray{background:#F3F4F6;color:#9CA3AF}
-
-/* Class bar chart */
-.class-bars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.class-row{display:flex;align-items:center;gap:10px;font-size:13px}
-.class-label{width:60px;font-weight:700;color:#4B5563}
-.bar-track{flex:1;background:#F3F4F6;border-radius:6px;height:20px;overflow:hidden}
-.bar-fill{height:100%;background:#1B3A6B;border-radius:6px;transition:.6s}
-.bar-count{width:32px;text-align:right;font-weight:700;color:#1B3A6B;font-size:12px}
-
+tr:hover td{background:#FAFBFC}
+/* Badges */
+.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:700}
+.b-gold{background:rgba(212,175,55,.15);color:#D4AF37}.b-green{background:#D4EDDA;color:#27AE60}
+.b-gray{background:#F3F4F6;color:#9CA3AF}.b-red{background:#FDECEA;color:#E74C3C}
+.b-blue{background:#EFF6FF;color:#1B3A6B}
+/* Buttons */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;padding:8px 14px}
+.btn:active{transform:scale(.97)}.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:#1B3A6B;color:#fff}.btn-success{background:#27AE60;color:#fff}
+.btn-danger{background:#E74C3C;color:#fff}.btn-warn{background:#F59E0B;color:#fff}
+.btn-secondary{background:#F3F4F6;color:#4B5563}
+.btn-sm{padding:5px 10px;font-size:12px}.btn-xs{padding:3px 8px;font-size:11px}
+.btn-full{width:100%;height:44px}
 /* Form */
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.form-group{display:flex;flex-direction:column;gap:4px}
-.form-group.full{grid-column:1/-1}
-.form-group label{font-size:12px;font-weight:700;color:#4B5563}
-.form-group input,.form-group select,.form-group textarea{border:1.5px solid #E5E7EB;border-radius:8px;padding:8px 12px;font-size:14px;outline:none}
-.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:#1B3A6B}
-.form-actions{display:flex;gap:8px;margin-top:16px}
+.fg{display:flex;flex-direction:column;gap:4px}.fg.full{grid-column:1/-1}
+.fg label{font-size:11px;font-weight:700;color:#4B5563;text-transform:uppercase;letter-spacing:.4px}
+.fg input,.fg select,.fg textarea{border:1.5px solid #E5E7EB;border-radius:8px;padding:8px 12px;font-size:14px;outline:none;font-family:inherit;background:#fff}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:#1B3A6B}
+.form-actions{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+/* Misc */
+.empty-state{text-align:center;padding:40px;color:#9CA3AF}
 .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.tab-bar{display:flex;gap:4px;background:#F4F6F9;border-radius:10px;padding:4px;margin-bottom:20px}
-.tab{flex:1;padding:8px;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;background:transparent;color:#9CA3AF;transition:.15s}
-.tab.active{background:#fff;color:#1B3A6B;box-shadow:0 1px 4px rgba(0,0,0,.08)}
-.empty{text-align:center;padding:48px;color:#9CA3AF;font-size:14px}
-select.filter{border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 12px;font-size:13px;outline:none;background:#fff}
+.search-row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.search-row input,.search-row select{border:1.5px solid #E5E7EB;border-radius:8px;padding:7px 12px;font-size:13px;outline:none}
+.search-row input:focus,.search-row select:focus{border-color:#1B3A6B}
 .pagination{display:flex;align-items:center;gap:8px;justify-content:flex-end;margin-top:12px;font-size:13px}
-.page-btn{border:1.5px solid #E5E7EB;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;font-weight:600;font-size:13px}
-.page-btn:disabled{opacity:.4;cursor:not-allowed}
+.pg-btn{border:1.5px solid #E5E7EB;background:#fff;border-radius:8px;padding:5px 12px;cursor:pointer;font-weight:700;font-size:12px}
+.pg-btn:disabled{opacity:.4;cursor:not-allowed}
+.class-bars{display:flex;flex-direction:column;gap:8px}
+.c-row{display:flex;align-items:center;gap:10px}
+.c-lbl{width:54px;font-size:12px;font-weight:700;color:#4B5563}
+.bar-track{flex:1;background:#F3F4F6;border-radius:6px;height:18px;overflow:hidden}
+.bar-fill{height:100%;background:#1B3A6B;border-radius:6px;transition:.6s ease}
+.c-cnt{width:28px;text-align:right;font-size:12px;font-weight:700;color:#1B3A6B}
+/* Banner preview */
+.banner-preview{border-radius:12px;padding:18px 20px;margin-bottom:12px;position:relative;overflow:hidden;min-height:80px}
+.banner-preview h3{font-size:16px;font-weight:900;margin-bottom:4px}
+.banner-preview p{font-size:13px;opacity:.8}
+/* Color picker row */
+.color-row{display:flex;align-items:center;gap:8px}
+.color-swatch{width:28px;height:28px;border-radius:6px;border:2px solid #E5E7EB;cursor:pointer;flex-shrink:0}
+/* Announcement */
+.ann-item{display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:10px;background:#F9FAFB;margin-bottom:8px}
+.ann-type{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:800}
+.t-info{background:#EFF6FF;color:#1B3A6B}.t-warning{background:#FEF3C7;color:#F59E0B}.t-success{background:#D4EDDA;color:#27AE60}.t-error{background:#FDECEA;color:#E74C3C}
+/* Alert */
+.alert{padding:10px 14px;border-radius:8px;font-size:13px;margin-bottom:12px}
+.alert-success{background:#D4EDDA;color:#27AE60}.alert-error{background:#FDECEA;color:#E74C3C}
+input[type=color]{width:36px;height:32px;border:none;padding:2px;cursor:pointer;border-radius:6px}
 </style>
 </head>
 <body>
@@ -101,367 +106,871 @@ select.filter{border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 12px;font
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">
-      <div class="ss">SS</div>
-      <h1>Admin Dashboard</h1>
-      <p>Study Sikkim · Management Console</p>
+    <div style="text-align:center;margin-bottom:24px">
+      <div class="logo-circle">SS</div>
+      <h1 style="font-size:20px;font-weight:900;margin-bottom:4px">Admin Dashboard</h1>
+      <p style="color:#9CA3AF;font-size:13px">Study Sikkim Management Console</p>
     </div>
-    <label>Username</label>
-    <input type="text" id="username" placeholder="admin" />
-    <label>Password</label>
-    <input type="password" id="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" />
-    <button class="btn btn-primary" id="login-btn" onclick="doLogin()">Sign In</button>
-    <div class="error-msg" id="login-error" style="display:none"></div>
+    <div class="fg"><label>Username</label><input type="text" id="un" placeholder="admin" /></div>
+    <div class="fg" style="margin-top:10px"><label>Password</label><input type="password" id="pw" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()" /></div>
+    <button class="btn btn-primary btn-full" style="margin-top:16px" id="login-btn" onclick="doLogin()">Sign In</button>
+    <div id="login-err" class="alert alert-error" style="display:none;margin-top:12px"></div>
   </div>
 </div>
 
-<!-- APP SHELL -->
+<!-- APP -->
 <div id="app">
   <div class="sidebar">
-    <div class="sidebar-logo">
-      <div class="ss">SS</div>
-      <h2>Study Sikkim</h2>
-      <p>Admin Console</p>
+    <div class="sb-logo">
+      <div class="dot">SS</div>
+      <div><h2>Study Sikkim</h2><p id="admin-name">Admin</p></div>
     </div>
     <nav>
-      <div class="nav-item active" onclick="showSection('dashboard')"><span class="icon">📊</span> Dashboard</div>
-      <div class="nav-item" onclick="showSection('students')"><span class="icon">👥</span> Students</div>
-      <div class="nav-item" onclick="showSection('attempts')"><span class="icon">📝</span> Quiz Attempts</div>
-      <div class="nav-item" onclick="showSection('content')"><span class="icon">📚</span> Content</div>
+      <div class="nav-section">Overview</div>
+      <div class="nav-item active" data-sec="dashboard" onclick="show(this)">📊 Dashboard</div>
+      <div class="nav-item" data-sec="students" onclick="show(this)">👥 Students</div>
+      <div class="nav-item" data-sec="payments" onclick="show(this)">💳 Payments</div>
+      <div class="nav-item" data-sec="attempts" onclick="show(this)">📝 Quiz Attempts</div>
+      <div class="nav-section">Content</div>
+      <div class="nav-item" data-sec="content" onclick="show(this)">📚 Content Manager</div>
+      <div class="nav-section">Customize</div>
+      <div class="nav-item" data-sec="banners" onclick="show(this)">🖼 Banner Editor</div>
+      <div class="nav-item" data-sec="theme" onclick="show(this)">🎨 Theme</div>
+      <div class="nav-item" data-sec="announce" onclick="show(this)">📢 Announcements</div>
+      <div class="nav-section">Settings</div>
+      <div class="nav-item" data-sec="settings" onclick="show(this)">⚙️ Settings</div>
     </nav>
-    <div class="sidebar-bottom">
-      <button class="signout-btn" onclick="signOut()">↩ Sign Out</button>
+    <div class="sb-bottom">
+      <button class="btn btn-secondary btn-full" onclick="signOut()">↩ Sign Out</button>
     </div>
   </div>
 
   <div class="main">
+
     <!-- DASHBOARD -->
     <div class="section active" id="sec-dashboard">
-      <div class="page-header"><h1>📊 Dashboard</h1></div>
-      <div class="stats-grid" id="stats-grid">
-        <div class="stat-card"><div class="stat-icon">👥</div><div class="stat-value" id="s-students">—</div><div class="stat-label">Total Students</div></div>
-        <div class="stat-card"><div class="stat-icon">⭐</div><div class="stat-value" id="s-premium">—</div><div class="stat-label">Premium Students</div></div>
-        <div class="stat-card"><div class="stat-icon">📝</div><div class="stat-value" id="s-quizzes">—</div><div class="stat-label">Quizzes Taken</div></div>
-        <div class="stat-card"><div class="stat-icon">💰</div><div class="stat-value" id="s-revenue">—</div><div class="stat-label">Total Revenue</div></div>
+      <div class="page-hdr"><h1>📊 Dashboard</h1><span id="dash-date" style="color:#9CA3AF;font-size:13px"></span></div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-val" id="s1">—</div><div class="stat-lbl">Total Students</div></div>
+        <div class="stat-card green"><div class="stat-val" id="s2">—</div><div class="stat-lbl">Premium Students</div></div>
+        <div class="stat-card orange"><div class="stat-val" id="s3">—</div><div class="stat-lbl">Total Quizzes</div></div>
+        <div class="stat-card purple"><div class="stat-val" id="s4">—</div><div class="stat-lbl">Revenue (₹)</div></div>
+        <div class="stat-card"><div class="stat-val" id="s5">—</div><div class="stat-lbl">New Today</div></div>
+        <div class="stat-card green"><div class="stat-val" id="s6">—</div><div class="stat-lbl">Quizzes Today</div></div>
+        <div class="stat-card orange"><div class="stat-val" id="s7">—</div><div class="stat-lbl">Total Subjects</div></div>
+        <div class="stat-card purple"><div class="stat-val" id="s8">—</div><div class="stat-lbl">Total Questions</div></div>
       </div>
-      <div class="card">
-        <div class="card-header"><span class="card-title">Students by Class</span></div>
-        <div class="class-bars" id="class-bars"><div class="empty">Loading…</div></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Students by Class</div>
+          <div class="class-bars" id="class-bars"><div class="empty-state">Loading…</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:14px">Recent Signups</div>
+          <div id="recent-signups"><div class="empty-state">Loading…</div></div>
+        </div>
       </div>
     </div>
 
     <!-- STUDENTS -->
     <div class="section" id="sec-students">
-      <div class="page-header">
-        <h1>👥 Students</h1>
-        <select class="filter" id="class-filter" onchange="loadStudents(1)">
-          <option value="">All Classes</option>
-          <option value="3">Class 3</option><option value="4">Class 4</option>
-          <option value="5">Class 5</option><option value="6">Class 6</option>
-          <option value="7">Class 7</option><option value="8">Class 8</option>
-          <option value="9">Class 9</option><option value="10">Class 10</option>
-          <option value="11">Class 11</option><option value="12">Class 12</option>
-        </select>
-      </div>
+      <div class="page-hdr"><h1>👥 Students</h1></div>
       <div class="card">
-        <table id="students-table">
-          <thead><tr><th>Name</th><th>Email</th><th>Class</th><th>School</th><th>Status</th><th>Joined</th><th>Action</th></tr></thead>
-          <tbody id="students-body"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
-        </table>
+        <div class="search-row" style="margin-bottom:14px">
+          <input id="stu-search" placeholder="Search name, email, school…" style="flex:1;min-width:160px" oninput="debounce(()=>loadStudents(1),400)" />
+          <select id="stu-class" onchange="loadStudents(1)">
+            <option value="">All Classes</option>
+            <option>3</option><option>4</option><option>5</option><option>6</option>
+            <option>7</option><option>8</option><option>9</option><option>10</option>
+            <option>11</option><option>12</option>
+          </select>
+          <select id="stu-premium" onchange="loadStudents(1)">
+            <option value="">All</option><option value="1">Premium</option><option value="0">Free</option>
+          </select>
+        </div>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Name</th><th>Email</th><th>Class</th><th>School</th><th>Status</th><th>Joined</th><th>Actions</th></tr></thead>
+          <tbody id="stu-tbody"><tr><td colspan="7" class="empty-state">Loading…</td></tr></tbody></table>
+        </div>
         <div class="pagination">
-          <button class="page-btn" id="prev-btn" onclick="loadStudents(currentPage-1)" disabled>← Prev</button>
-          <span id="page-info">Page 1</span>
-          <button class="page-btn" id="next-btn" onclick="loadStudents(currentPage+1)">Next →</button>
+          <button class="pg-btn" id="stu-prev" onclick="loadStudents(stuPage-1)" disabled>← Prev</button>
+          <span id="stu-pinfo" style="color:#9CA3AF"></span>
+          <button class="pg-btn" id="stu-next" onclick="loadStudents(stuPage+1)">Next →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENTS -->
+    <div class="section" id="sec-payments">
+      <div class="page-hdr"><h1>💳 Payments</h1></div>
+      <div class="card">
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Student</th><th>Plan</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody id="pay-tbody"><tr><td colspan="5" class="empty-state">Loading…</td></tr></tbody></table>
+        </div>
+        <div class="pagination">
+          <button class="pg-btn" id="pay-prev" onclick="loadPayments(payPage-1)" disabled>← Prev</button>
+          <span id="pay-pinfo" style="color:#9CA3AF"></span>
+          <button class="pg-btn" id="pay-next" onclick="loadPayments(payPage+1)">Next →</button>
         </div>
       </div>
     </div>
 
     <!-- ATTEMPTS -->
     <div class="section" id="sec-attempts">
-      <div class="page-header"><h1>📝 Quiz Attempts</h1></div>
+      <div class="page-hdr"><h1>📝 Quiz Attempts</h1></div>
       <div class="card">
-        <table>
-          <thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Chapter</th><th>Score</th><th>Time</th><th>Date</th></tr></thead>
-          <tbody id="attempts-body"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
-        </table>
+        <div class="tbl-wrap">
+          <table><thead><tr><th>Student</th><th>Class</th><th>Subject</th><th>Chapter</th><th>Score</th><th>%</th><th>Time</th><th>Date</th></tr></thead>
+          <tbody id="att-tbody"><tr><td colspan="8" class="empty-state">Loading…</td></tr></tbody></table>
+        </div>
+        <div class="pagination">
+          <button class="pg-btn" id="att-prev" onclick="loadAttempts(attPage-1)" disabled>← Prev</button>
+          <span id="att-pinfo" style="color:#9CA3AF"></span>
+          <button class="pg-btn" id="att-next" onclick="loadAttempts(attPage+1)">Next →</button>
+        </div>
       </div>
     </div>
 
     <!-- CONTENT -->
     <div class="section" id="sec-content">
-      <div class="page-header"><h1>📚 Content</h1></div>
+      <div class="page-hdr"><h1>📚 Content Manager</h1></div>
       <div class="tab-bar">
-        <button class="tab active" onclick="showTab('subjects')">Subjects</button>
-        <button class="tab" onclick="showTab('chapters')">Chapters</button>
-        <button class="tab" onclick="showTab('questions')">Questions</button>
+        <button class="tab active" onclick="cTab('subjects',this)">Subjects</button>
+        <button class="tab" onclick="cTab('chapters',this)">Chapters</button>
+        <button class="tab" onclick="cTab('questions',this)">Questions</button>
+        <button class="tab" onclick="cTab('bulk',this)">Bulk Import</button>
       </div>
 
-      <!-- Subjects tab -->
-      <div id="tab-subjects">
+      <!-- Subjects -->
+      <div id="ctab-subjects">
         <div class="card">
-          <div class="card-header"><span class="card-title">Add Subject</span></div>
+          <div class="card-hdr"><span class="card-title">Add Subject</span></div>
           <div class="form-grid">
-            <div class="form-group"><label>Name</label><input id="sub-name" placeholder="e.g. Mathematics" /></div>
-            <div class="form-group"><label>Class Level</label>
-              <select id="sub-class"><option value="">Select class</option>
-                <option>3</option><option>4</option><option>5</option><option>6</option>
-                <option>7</option><option>8</option><option>9</option><option>10</option>
-                <option>11</option><option>12</option>
-              </select>
-            </div>
-            <div class="form-group"><label>Icon (name)</label><input id="sub-icon" placeholder="book-open" /></div>
-            <div class="form-group"><label>Color (hex)</label><input id="sub-color" placeholder="#1B3A6B" /></div>
+            <div class="fg"><label>Name</label><input id="sn" placeholder="e.g. Mathematics"/></div>
+            <div class="fg"><label>Class</label><select id="sc"><option value="">Select</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></div>
+            <div class="fg"><label>Icon</label><input id="si" placeholder="book-open"/></div>
+            <div class="fg"><label>Color</label><div class="color-row"><input type="color" id="scolor" value="#1B3A6B"/><input id="scolorText" value="#1B3A6B" style="flex:1" oninput="document.getElementById('scolor').value=this.value"/></div></div>
           </div>
-          <div class="form-actions">
-            <button class="btn btn-primary btn-sm" onclick="addSubject()">+ Add Subject</button>
-          </div>
+          <div class="form-actions"><button class="btn btn-primary" onclick="addSubject()">+ Add Subject</button></div>
         </div>
         <div class="card">
-          <div class="card-header"><span class="card-title">Subjects</span>
-            <select class="filter" id="subj-class-filter" onchange="loadSubjectsList()">
-              <option value="3">Class 3</option><option value="4">Class 4</option>
-              <option value="5">Class 5</option><option value="6">Class 6</option>
-              <option value="7">Class 7</option><option value="8">Class 8</option>
+          <div class="card-hdr">
+            <span class="card-title">Subjects</span>
+            <select class="fg" id="sub-cls-filter" onchange="loadSubjects()" style="width:auto">
+              <option value="3">Class 3</option><option value="4">Class 4</option><option value="5">Class 5</option>
+              <option value="6">Class 6</option><option value="7">Class 7</option><option value="8">Class 8</option>
               <option value="9">Class 9</option><option value="10">Class 10</option>
               <option value="11">Class 11</option><option value="12">Class 12</option>
             </select>
           </div>
-          <div id="subjects-list"><div class="empty">Select a class to view subjects</div></div>
+          <div id="subjects-tbl"><div class="empty-state">Select a class</div></div>
         </div>
       </div>
 
-      <!-- Chapters tab -->
-      <div id="tab-chapters" style="display:none">
+      <!-- Chapters -->
+      <div id="ctab-chapters" style="display:none">
         <div class="card">
-          <div class="card-header"><span class="card-title">Add Chapter</span></div>
+          <div class="card-hdr"><span class="card-title">Add Chapter</span></div>
           <div class="form-grid">
-            <div class="form-group full"><label>Subject ID</label><input id="ch-subject" placeholder="Subject ID (from subjects list)" type="number" /></div>
-            <div class="form-group full"><label>Chapter Name</label><input id="ch-name" placeholder="e.g. Chapter 1: Numbers" /></div>
+            <div class="fg full"><label>Subject ID</label><input id="chsub" placeholder="Paste subject ID from the subjects list" type="number"/></div>
+            <div class="fg full"><label>Chapter Name</label><input id="chname" placeholder="e.g. Chapter 1: Real Numbers"/></div>
           </div>
-          <div class="form-actions">
-            <button class="btn btn-primary btn-sm" onclick="addChapter()">+ Add Chapter</button>
+          <div class="form-actions"><button class="btn btn-primary" onclick="addChapter()">+ Add Chapter</button></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Chapters for Subject</span>
+            <div style="display:flex;gap:8px">
+              <input id="ch-sub-id" placeholder="Subject ID" type="number" style="width:120px;border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 10px;font-size:13px"/>
+              <button class="btn btn-secondary btn-sm" onclick="loadChapters()">Load</button>
+            </div>
           </div>
+          <div id="chapters-tbl"><div class="empty-state">Enter a subject ID and click Load</div></div>
         </div>
       </div>
 
-      <!-- Questions tab -->
-      <div id="tab-questions" style="display:none">
+      <!-- Questions -->
+      <div id="ctab-questions" style="display:none">
         <div class="card">
-          <div class="card-header"><span class="card-title">Add Question</span></div>
+          <div class="card-hdr"><span class="card-title">Add Question</span></div>
           <div class="form-grid">
-            <div class="form-group full"><label>Chapter ID</label><input id="q-chapter" placeholder="Chapter ID" type="number" /></div>
-            <div class="form-group full"><label>Question Text</label><textarea id="q-text" rows="3" placeholder="Enter the question..."></textarea></div>
-            <div class="form-group"><label>Option A</label><input id="q-a" /></div>
-            <div class="form-group"><label>Option B</label><input id="q-b" /></div>
-            <div class="form-group"><label>Option C</label><input id="q-c" /></div>
-            <div class="form-group"><label>Option D</label><input id="q-d" /></div>
-            <div class="form-group"><label>Correct Answer</label>
-              <select id="q-correct"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="D">D</option></select>
-            </div>
-            <div class="form-group"><label>Type</label>
-              <select id="q-premium"><option value="0">Free</option><option value="1">Premium</option></select>
+            <div class="fg full"><label>Chapter ID</label><input id="qch" placeholder="Chapter ID" type="number"/></div>
+            <div class="fg full"><label>Question</label><textarea id="qtext" rows="3" placeholder="Enter the question text…"></textarea></div>
+            <div class="fg"><label>Option A</label><input id="qa"/></div>
+            <div class="fg"><label>Option B</label><input id="qb"/></div>
+            <div class="fg"><label>Option C</label><input id="qc"/></div>
+            <div class="fg"><label>Option D</label><input id="qd"/></div>
+            <div class="fg"><label>Correct Answer</label><select id="qans"><option>A</option><option>B</option><option>C</option><option>D</option></select></div>
+            <div class="fg"><label>Type</label><select id="qprem"><option value="0">Free</option><option value="1">Premium</option></select></div>
+            <div class="fg"><label>Difficulty</label><select id="qdiff"><option>easy</option><option selected>medium</option><option>hard</option></select></div>
+          </div>
+          <div class="form-actions"><button class="btn btn-primary" onclick="addQuestion()">+ Add Question</button></div>
+        </div>
+        <div class="card">
+          <div class="card-hdr">
+            <span class="card-title">Questions for Chapter</span>
+            <div style="display:flex;gap:8px">
+              <input id="q-ch-id" placeholder="Chapter ID" type="number" style="width:120px;border:1.5px solid #E5E7EB;border-radius:8px;padding:6px 10px;font-size:13px"/>
+              <button class="btn btn-secondary btn-sm" onclick="loadQuestions()">Load</button>
             </div>
           </div>
+          <div id="questions-tbl"><div class="empty-state">Enter a chapter ID and click Load</div></div>
+        </div>
+      </div>
+
+      <!-- Bulk Import -->
+      <div id="ctab-bulk" style="display:none">
+        <div class="card">
+          <div class="card-hdr"><span class="card-title">Bulk Import Questions (JSON)</span></div>
+          <div class="fg" style="margin-bottom:12px"><label>Chapter ID</label><input id="bulk-ch" type="number" placeholder="Chapter ID"/></div>
+          <div class="fg"><label>JSON Array of Questions</label>
+            <textarea id="bulk-json" rows="12" placeholder='[
+  {
+    "question_text": "What is 2+2?",
+    "option_a": "3",
+    "option_b": "4",
+    "option_c": "5",
+    "option_d": "6",
+    "correct_answer": "B",
+    "is_premium": 0,
+    "difficulty": "easy"
+  }
+]'></textarea>
+          </div>
           <div class="form-actions">
-            <button class="btn btn-primary btn-sm" onclick="addQuestion()">+ Add Question</button>
+            <button class="btn btn-primary" onclick="bulkImport()">📥 Import Questions</button>
+            <button class="btn btn-secondary" onclick="document.getElementById('bulk-json').value=bulkTemplate()">📋 Template</button>
+          </div>
+          <div id="bulk-result"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BANNERS -->
+    <div class="section" id="sec-banners">
+      <div class="page-hdr"><h1>🖼 Banner Editor</h1><button class="btn btn-primary" onclick="openBannerForm()">+ New Banner</button></div>
+      <div id="banners-list"><div class="empty-state">Loading…</div></div>
+      <div class="card" id="banner-form" style="display:none;border:2px solid #1B3A6B">
+        <div class="card-hdr"><span class="card-title" id="banner-form-title">New Banner</span><button class="btn btn-secondary btn-sm" onclick="closeBannerForm()">✕ Cancel</button></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div>
+            <div class="form-grid">
+              <div class="fg full"><label>Title *</label><input id="b-title" oninput="updateBannerPreview()"/></div>
+              <div class="fg full"><label>Subtitle</label><input id="b-sub" oninput="updateBannerPreview()"/></div>
+              <div class="fg full"><label>Image URL</label><input id="b-img" placeholder="https://… (optional)" oninput="updateBannerPreview()"/></div>
+              <div class="fg"><label>Action Type</label>
+                <select id="b-atype">
+                  <option value="none">None</option>
+                  <option value="url">Open URL</option>
+                  <option value="premium">Go to Premium</option>
+                  <option value="subject">Open Subject</option>
+                </select>
+              </div>
+              <div class="fg"><label>Action Value</label><input id="b-aval" placeholder="URL or ID"/></div>
+              <div class="fg">
+                <label>Background Color</label>
+                <div class="color-row">
+                  <input type="color" id="b-bg" value="#1B3A6B" oninput="document.getElementById('b-bg-txt').value=this.value;updateBannerPreview()"/>
+                  <input id="b-bg-txt" value="#1B3A6B" style="flex:1" oninput="document.getElementById('b-bg').value=this.value;updateBannerPreview()"/>
+                </div>
+              </div>
+              <div class="fg">
+                <label>Text Color</label>
+                <div class="color-row">
+                  <input type="color" id="b-tc" value="#ffffff" oninput="document.getElementById('b-tc-txt').value=this.value;updateBannerPreview()"/>
+                  <input id="b-tc-txt" value="#ffffff" style="flex:1" oninput="document.getElementById('b-tc').value=this.value;updateBannerPreview()"/>
+                </div>
+              </div>
+              <div class="fg"><label>Status</label>
+                <select id="b-active"><option value="1">Active</option><option value="0">Inactive</option></select>
+              </div>
+            </div>
+            <div class="form-actions">
+              <button class="btn btn-primary" onclick="saveBanner()">💾 Save Banner</button>
+            </div>
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:800;color:#9CA3AF;text-transform:uppercase;margin-bottom:8px">Preview</div>
+            <div id="banner-preview-box" class="banner-preview" style="background:#1B3A6B;color:#fff">
+              <h3 id="bp-title">Banner Title</h3>
+              <p id="bp-sub">Subtitle text</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
+
+    <!-- THEME -->
+    <div class="section" id="sec-theme">
+      <div class="page-hdr"><h1>🎨 Theme Customizer</h1></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+        <div class="card">
+          <div class="card-title" style="margin-bottom:16px">Brand Colors</div>
+          <div id="theme-colors"></div>
+          <div class="form-actions" style="margin-top:16px">
+            <button class="btn btn-primary" onclick="saveTheme()">💾 Save Theme</button>
+            <button class="btn btn-secondary" onclick="resetTheme()">↩ Reset to Default</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:16px">Preview</div>
+          <div id="theme-preview"></div>
+          <div style="margin-top:16px;padding:12px;background:#F4F6F9;border-radius:10px">
+            <div style="font-size:11px;font-weight:700;color:#9CA3AF;margin-bottom:8px">APP SETTINGS</div>
+            <div class="fg" style="margin-bottom:8px"><label>App Name</label><input id="app-name" placeholder="Study Sikkim"/></div>
+            <div class="fg" style="margin-bottom:8px"><label>Tagline</label><input id="app-tagline" placeholder="Learn · Practice · Excel"/></div>
+            <div class="fg"><label>Support Email</label><input id="support-email" placeholder="support@example.com"/></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANNOUNCEMENTS -->
+    <div class="section" id="sec-announce">
+      <div class="page-hdr"><h1>📢 Announcements</h1></div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px">New Announcement</div>
+        <div class="form-grid">
+          <div class="fg full"><label>Title</label><input id="ann-title" placeholder="Announcement title"/></div>
+          <div class="fg full"><label>Message</label><textarea id="ann-body" rows="3" placeholder="Announcement message…"></textarea></div>
+          <div class="fg"><label>Type</label><select id="ann-type"><option value="info">ℹ Info</option><option value="warning">⚠ Warning</option><option value="success">✅ Success</option><option value="error">🚨 Alert</option></select></div>
+          <div class="fg"><label>Target Class (optional)</label><select id="ann-class"><option value="">All Students</option><option>3</option><option>4</option><option>5</option><option>6</option><option>7</option><option>8</option><option>9</option><option>10</option><option>11</option><option>12</option></select></div>
+        </div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="addAnnouncement()">📢 Publish</button></div>
+      </div>
+      <div class="card">
+        <div class="card-title" style="margin-bottom:14px">Active Announcements</div>
+        <div id="ann-list"><div class="empty-state">Loading…</div></div>
+      </div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="section" id="sec-settings">
+      <div class="page-hdr"><h1>⚙️ Settings</h1></div>
+      <div class="card" style="max-width:480px">
+        <div class="card-title" style="margin-bottom:16px">Change Admin Password</div>
+        <div class="fg"><label>Current Password</label><input type="password" id="cp-cur"/></div>
+        <div class="fg" style="margin-top:10px"><label>New Password</label><input type="password" id="cp-new"/></div>
+        <div class="fg" style="margin-top:10px"><label>Confirm New Password</label><input type="password" id="cp-conf"/></div>
+        <div class="form-actions"><button class="btn btn-primary" onclick="changePassword()">🔒 Update Password</button></div>
+        <div id="cp-msg" style="margin-top:12px"></div>
+      </div>
+    </div>
+
+  </div><!-- .main -->
+</div><!-- #app -->
 
 <script>
 const API = '';
 let token = localStorage.getItem('adminToken') || '';
-let currentPage = 1;
-let totalPages = 1;
+let stuPage = 1, payPage = 1, attPage = 1;
+let editingBannerId = null;
+let debounceTm = null;
+const defaultTheme = {
+  primary:'#1B3A6B', primaryLight:'#2D5AA0', accent:'#E8800A',
+  success:'#27AE60', danger:'#E74C3C', premium:'#7C3AED', premiumGold:'#D4AF37'
+};
+const themeLabels = {
+  primary:'Primary (Main Brand)', primaryLight:'Primary Light', accent:'Accent / CTA',
+  success:'Success Green', danger:'Danger Red', premium:'Premium Purple', premiumGold:'Premium Gold'
+};
 
 if (token) initApp();
 
+// ── Helpers ──────────────────────────────────────────────────────────────────
 async function api(path, opts={}) {
-  const r = await fetch(API + path, {
-    ...opts,
-    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token, ...(opts.headers||{}) }
-  });
-  if (r.status === 401) { signOut(); return null; }
-  return r.json();
+  try {
+    const r = await fetch(API+path, { ...opts, headers:{'Content-Type':'application/json','Authorization':'Bearer '+token,...(opts.headers||{})} });
+    if (r.status===401) { signOut(); return null; }
+    return await r.json();
+  } catch(e) { return null; }
+}
+function debounce(fn, ms) { clearTimeout(debounceTm); debounceTm = setTimeout(fn, ms); }
+function fmt(dateStr) { return dateStr ? new Date(dateStr).toLocaleDateString() : '—'; }
+function fmtRev(paise) { return '₹'+(paise/100).toLocaleString('en-IN',{minimumFractionDigits:0}); }
+function toast(msg, ok=true) {
+  const d = document.createElement('div');
+  d.className = 'alert '+(ok?'alert-success':'alert-error');
+  d.textContent = msg;
+  d.style.cssText='position:fixed;top:20px;right:20px;z-index:9999;min-width:220px;box-shadow:0 4px 16px rgba(0,0,0,.15)';
+  document.body.appendChild(d);
+  setTimeout(()=>d.remove(), 3000);
 }
 
+// ── Auth ─────────────────────────────────────────────────────────────────────
 async function doLogin() {
   const btn = document.getElementById('login-btn');
-  const err = document.getElementById('login-error');
-  const u = document.getElementById('username').value.trim();
-  const p = document.getElementById('password').value;
-  if (!u || !p) { err.textContent = 'Enter username and password'; err.style.display='block'; return; }
+  const err = document.getElementById('login-err');
+  const u = document.getElementById('un').value.trim();
+  const p = document.getElementById('pw').value;
+  if (!u || !p) { err.textContent='Enter username and password'; err.style.display='block'; return; }
   btn.innerHTML = '<div class="spinner"></div>'; btn.disabled = true; err.style.display='none';
-  const data = await fetch(API + '/api/admin/login', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({username:u, password:p}) }).then(r=>r.json()).catch(()=>null);
-  if (!data || !data.token) {
-    err.textContent = data?.error || 'Login failed'; err.style.display='block';
-    btn.innerHTML='Sign In'; btn.disabled=false; return;
-  }
-  token = data.token; localStorage.setItem('adminToken', token);
+  const data = await fetch(API+'/api/admin/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({username:u,password:p})}).then(r=>r.json()).catch(()=>null);
+  if (!data?.token) { err.textContent=data?.error||'Login failed'; err.style.display='block'; btn.innerHTML='Sign In'; btn.disabled=false; return; }
+  token=data.token; localStorage.setItem('adminToken',token);
+  if (data.username) document.getElementById('admin-name').textContent=data.username;
   initApp();
 }
-
 function initApp() {
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
+  document.getElementById('dash-date').textContent=new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   loadDashboard();
 }
+function signOut() { localStorage.removeItem('adminToken'); token=''; location.reload(); }
 
-function signOut() {
-  localStorage.removeItem('adminToken'); token='';
-  document.getElementById('login-screen').style.display='flex';
-  document.getElementById('app').style.display='none';
-}
-
-function showSection(name) {
+// ── Navigation ────────────────────────────────────────────────────────────────
+function show(el) {
+  const sec = el.dataset.sec;
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('sec-'+name).classList.add('active');
-  event.currentTarget.classList.add('active');
-  if (name==='students') loadStudents(1);
-  if (name==='attempts') loadAttempts();
-  if (name==='content') loadSubjectsList();
+  document.getElementById('sec-'+sec).classList.add('active');
+  el.classList.add('active');
+  if (sec==='students') loadStudents(1);
+  if (sec==='payments') loadPayments(1);
+  if (sec==='attempts') loadAttempts(1);
+  if (sec==='content') loadSubjects();
+  if (sec==='banners') loadBanners();
+  if (sec==='theme') loadTheme();
+  if (sec==='announce') loadAnnouncements();
+}
+function cTab(name, el) {
+  ['subjects','chapters','questions','bulk'].forEach(t=>document.getElementById('ctab-'+t).style.display=t===name?'block':'none');
+  document.querySelectorAll('.tab-bar .tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
 }
 
-function showTab(name) {
-  ['subjects','chapters','questions'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===name ? 'block' : 'none';
-  });
-  document.querySelectorAll('.tab').forEach((t,i) => {
-    t.classList.toggle('active', ['subjects','chapters','questions'][i]===name);
-  });
-}
-
+// ── Dashboard ─────────────────────────────────────────────────────────────────
 async function loadDashboard() {
-  const data = await api('/api/admin/stats');
-  if (!data) return;
-  document.getElementById('s-students').textContent = data.total_students;
-  document.getElementById('s-premium').textContent = data.premium_students;
-  document.getElementById('s-quizzes').textContent = data.total_quizzes;
-  document.getElementById('s-revenue').textContent = '₹' + (data.total_revenue || 0).toLocaleString();
-  const max = Math.max(...(data.by_class||[]).map(c=>c.count), 1);
-  const bars = document.getElementById('class-bars');
-  bars.innerHTML = (data.by_class||[]).map(c=>`
-    <div class="class-row">
-      <span class="class-label">Class ${c.class_level}</span>
+  const d = await api('/api/admin/stats'); if (!d) return;
+  ['s1','s2','s3','s4','s5','s6','s7','s8'].forEach((id,i)=>{
+    const vals=[d.total_students,d.premium_students,d.total_quizzes,fmtRev(d.total_revenue||0),d.new_students_today,d.quizzes_today,d.total_subjects,d.total_questions];
+    document.getElementById(id).textContent=vals[i]??'0';
+  });
+  const max = Math.max(...(d.by_class||[]).map(c=>c.count),1);
+  document.getElementById('class-bars').innerHTML=(d.by_class||[]).map(c=>`
+    <div class="c-row">
+      <span class="c-lbl">Class ${c.class_level}</span>
       <div class="bar-track"><div class="bar-fill" style="width:${Math.round(c.count/max*100)}%"></div></div>
-      <span class="bar-count">${c.count}</span>
-    </div>`).join('') || '<div class="empty">No data yet</div>';
+      <span class="c-cnt">${c.count}</span>
+    </div>`).join('')||'<div class="empty-state">No data</div>';
+  document.getElementById('recent-signups').innerHTML=(d.recent_signups||[]).map(s=>`
+    <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #F3F4F6">
+      <div><strong style="font-size:13px">${s.name}</strong><div style="font-size:11px;color:#9CA3AF">${s.email}</div></div>
+      <span class="badge b-blue">Class ${s.class_level}</span>
+    </div>`).join('')||'<div class="empty-state">No signups yet</div>';
 }
 
+// ── Students ──────────────────────────────────────────────────────────────────
 async function loadStudents(page=1) {
-  currentPage = page;
-  const cls = document.getElementById('class-filter').value;
-  const url = '/api/admin/students?page='+page+(cls?'&class='+cls:'');
-  const data = await api(url);
-  if (!data) return;
-  totalPages = data.pages || 1;
-  document.getElementById('page-info').textContent = `Page ${data.page} of ${totalPages}`;
-  document.getElementById('prev-btn').disabled = page <= 1;
-  document.getElementById('next-btn').disabled = page >= totalPages;
-  const tbody = document.getElementById('students-body');
-  if (!data.students?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty">No students found</td></tr>'; return; }
-  tbody.innerHTML = data.students.map(s=>`
+  stuPage=page;
+  const s=document.getElementById('stu-search').value;
+  const cls=document.getElementById('stu-class').value;
+  const prem=document.getElementById('stu-premium').value;
+  let url='/api/admin/students?page='+page;
+  if(s) url+='&search='+encodeURIComponent(s);
+  if(cls) url+='&class='+cls;
+  const d=await api(url); if(!d) return;
+  document.getElementById('stu-pinfo').textContent=`Page ${d.page} of ${d.pages||1} (${d.total} total)`;
+  document.getElementById('stu-prev').disabled=page<=1;
+  document.getElementById('stu-next').disabled=page>=(d.pages||1);
+  const tb=document.getElementById('stu-tbody');
+  if(!d.students?.length){tb.innerHTML='<tr><td colspan="7" class="empty-state">No students found</td></tr>';return;}
+  tb.innerHTML=d.students.filter(s=>prem===''||String(s.is_premium)===prem).map(s=>`
     <tr>
-      <td><strong>${s.name}</strong></td>
-      <td>${s.email}</td>
-      <td>Class ${s.class_level}</td>
-      <td>${s.school||'—'}</td>
-      <td><span class="badge ${s.is_premium?'badge-gold':'badge-gray'}">${s.is_premium?'⭐ Premium':'Free'}</span></td>
-      <td>${new Date(s.created_at).toLocaleDateString()}</td>
-      <td>
+      <td><strong>${s.name}</strong></td><td style="color:#9CA3AF">${s.email}</td>
+      <td>Class ${s.class_level}</td><td>${s.school||'—'}</td>
+      <td><span class="badge ${s.is_premium?'b-gold':'b-gray'}">${s.is_premium?'⭐ Premium':'Free'}</span></td>
+      <td>${fmt(s.created_at)}</td>
+      <td style="display:flex;gap:4px;flex-wrap:wrap">
         ${s.is_premium
-          ? `<button class="btn btn-sm" style="background:#FEF3C7;color:#F59E0B;border:none" onclick="togglePremium(${s.id},false)">Revoke</button>`
-          : `<button class="btn btn-success btn-sm" onclick="togglePremium(${s.id},true)">+ Premium</button>`
-        }
+          ? `<button class="btn btn-warn btn-xs" onclick="togglePremium(${s.id},false)">Revoke</button>`
+          : `<button class="btn btn-success btn-xs" onclick="togglePremium(${s.id},true)">Premium</button>`}
+        <button class="btn btn-secondary btn-xs" onclick="delStudent(${s.id},'${s.name}')">🗑</button>
       </td>
     </tr>`).join('');
 }
-
-async function togglePremium(id, grant) {
-  await api('/api/admin/students/'+id+'/premium', { method:'PUT', body: JSON.stringify({ is_premium: grant, days: grant?365:0 }) });
-  loadStudents(currentPage);
+async function togglePremium(id,grant) {
+  const days=grant?parseInt(prompt('Days of premium? (e.g. 365)',365)||365):0;
+  if(grant&&isNaN(days)){return;}
+  await api('/api/admin/students/'+id+'/premium',{method:'PUT',body:JSON.stringify({is_premium:grant,days})});
+  toast(grant?`Premium granted for ${days} days`:'Premium revoked');
+  loadStudents(stuPage);
+}
+async function delStudent(id,name) {
+  if(!confirm(`Delete student "${name}"? This removes all their quiz data too.`)) return;
+  await api('/api/admin/students/'+id,{method:'DELETE'});
+  toast('Student deleted'); loadStudents(stuPage);
 }
 
-async function loadAttempts() {
-  const data = await api('/api/admin/attempts');
-  if (!data) return;
-  const tbody = document.getElementById('attempts-body');
-  if (!data.attempts?.length) { tbody.innerHTML='<tr><td colspan="7" class="empty">No attempts yet</td></tr>'; return; }
-  tbody.innerHTML = data.attempts.map(a=>{
-    const pct = a.total > 0 ? Math.round(a.score/a.total*100) : 0;
-    const color = pct>=70?'#27AE60':pct>=50?'#F59E0B':'#E74C3C';
-    const mins = Math.floor(a.time_taken_seconds/60);
-    const secs = a.time_taken_seconds%60;
-    return `<tr>
-      <td><strong>${a.student_name}</strong></td>
-      <td>Class ${a.class_level}</td>
-      <td>${a.subject_name}</td>
-      <td>${a.chapter_name}</td>
-      <td><strong style="color:${color}">${pct}%</strong> <span style="color:#9CA3AF;font-size:11px">${a.score}/${a.total}</span></td>
-      <td>${mins}m ${secs}s</td>
-      <td>${new Date(a.completed_at).toLocaleDateString()}</td>
-    </tr>`;
+// ── Payments ──────────────────────────────────────────────────────────────────
+async function loadPayments(page=1) {
+  payPage=page;
+  const d=await api('/api/admin/payments?page='+page); if(!d) return;
+  document.getElementById('pay-pinfo').textContent=`Page ${page} (${d.total} total)`;
+  document.getElementById('pay-prev').disabled=page<=1;
+  document.getElementById('pay-next').disabled=d.payments?.length<50;
+  const tb=document.getElementById('pay-tbody');
+  if(!d.payments?.length){tb.innerHTML='<tr><td colspan="5" class="empty-state">No payments yet</td></tr>';return;}
+  tb.innerHTML=d.payments.map(p=>`
+    <tr><td><strong>${p.student_name}</strong><div style="font-size:11px;color:#9CA3AF">${p.student_email}</div></td>
+    <td>${p.plan}</td><td>${fmtRev(p.amount)}</td>
+    <td><span class="badge ${p.status==='paid'?'b-green':'b-gray'}">${p.status}</span></td>
+    <td>${fmt(p.created_at)}</td></tr>`).join('');
+}
+
+// ── Attempts ──────────────────────────────────────────────────────────────────
+async function loadAttempts(page=1) {
+  attPage=page;
+  const d=await api('/api/admin/attempts?page='+page); if(!d) return;
+  document.getElementById('att-pinfo').textContent=`Page ${page} (${d.total} total)`;
+  document.getElementById('att-prev').disabled=page<=1;
+  document.getElementById('att-next').disabled=d.attempts?.length<100;
+  const tb=document.getElementById('att-tbody');
+  if(!d.attempts?.length){tb.innerHTML='<tr><td colspan="8" class="empty-state">No attempts yet</td></tr>';return;}
+  tb.innerHTML=d.attempts.map(a=>{
+    const color=a.percentage>=70?'#27AE60':a.percentage>=50?'#F59E0B':'#E74C3C';
+    const m=Math.floor(a.time_taken_seconds/60), s=a.time_taken_seconds%60;
+    return `<tr><td><strong>${a.student_name}</strong></td><td>Class ${a.class_level}</td>
+      <td>${a.subject_name}</td><td>${a.chapter_name}</td>
+      <td>${a.score}/${a.total}</td>
+      <td><strong style="color:${color}">${a.percentage}%</strong></td>
+      <td>${m}m ${s}s</td><td>${fmt(a.completed_at)}</td></tr>`;
   }).join('');
 }
 
-async function loadSubjectsList() {
-  const cls = document.getElementById('subj-class-filter').value || 3;
-  const data = await api('/api/admin/subjects?class='+cls);
-  const el = document.getElementById('subjects-list');
-  if (!data?.subjects?.length) { el.innerHTML='<div class="empty">No subjects for this class</div>'; return; }
-  el.innerHTML = `<table><thead><tr><th>ID</th><th>Name</th><th>Icon</th><th>Color</th><th>Chapters</th></tr></thead><tbody>
-    ${data.subjects.map(s=>`<tr>
-      <td><code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:12px">${s.id}</code></td>
+// ── Subjects ──────────────────────────────────────────────────────────────────
+async function loadSubjects() {
+  const cls=document.getElementById('sub-cls-filter').value||3;
+  const d=await api('/api/admin/subjects?class='+cls);
+  const el=document.getElementById('subjects-tbl');
+  if(!d?.subjects?.length){el.innerHTML='<div class="empty-state">No subjects for this class</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Color</th><th>Chapters</th><th>Questions</th><th>Actions</th></tr></thead><tbody>
+    ${d.subjects.map(s=>`<tr>
+      <td><code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:11px">${s.id}</code></td>
       <td><strong>${s.name}</strong></td>
-      <td>${s.icon||'—'}</td>
-      <td><span style="display:inline-block;width:16px;height:16px;background:${s.color};border-radius:4px;vertical-align:middle;margin-right:6px"></span>${s.color}</td>
-      <td>${s.chapter_count}</td>
+      <td><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:16px;height:16px;background:${s.color};border-radius:4px;display:inline-block"></span>${s.color}</span></td>
+      <td>${s.chapter_count||0}</td><td>${s.question_count||0}</td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-secondary btn-xs" onclick="editSubject(${s.id},'${s.name}','${s.icon||''}','${s.color}')">✏️</button>
+        <button class="btn btn-danger btn-xs" onclick="delSubject(${s.id},'${s.name}')">🗑</button>
+      </td>
     </tr>`).join('')}
-  </tbody></table>`;
+  </tbody></table></div>`;
 }
-
 async function addSubject() {
-  const name=document.getElementById('sub-name').value.trim();
-  const cls=document.getElementById('sub-class').value;
-  const icon=document.getElementById('sub-icon').value.trim()||'book-open';
-  const color=document.getElementById('sub-color').value.trim()||'#1B3A6B';
-  if(!name||!cls){alert('Name and class are required');return;}
-  const r = await api('/api/admin/subjects',{method:'POST',body:JSON.stringify({name,class_level:parseInt(cls),icon,color})});
-  if(r?.success){
-    ['sub-name','sub-icon','sub-color'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('sub-class').value='';
-    document.getElementById('subj-class-filter').value=cls;
-    loadSubjectsList();
-    alert('Subject added!');
-  } else { alert(r?.error||'Failed to add subject'); }
+  const name=document.getElementById('sn').value.trim();
+  const cls=document.getElementById('sc').value;
+  const icon=document.getElementById('si').value.trim()||'book-open';
+  const color=document.getElementById('scolorText').value.trim()||'#1B3A6B';
+  if(!name||!cls){toast('Name and class required',false);return;}
+  const r=await api('/api/admin/subjects',{method:'POST',body:JSON.stringify({name,class_level:parseInt(cls),icon,color})});
+  if(r?.success){toast('Subject added!');['sn','si'].forEach(id=>document.getElementById(id).value='');loadSubjects();}
+  else toast(r?.error||'Failed',false);
+}
+async function editSubject(id,name,icon,color) {
+  const n=prompt('Subject name:',name); if(!n)return;
+  const c=prompt('Color (hex):',color)||color;
+  await api('/api/admin/subjects/'+id,{method:'PUT',body:JSON.stringify({name:n,color:c})});
+  toast('Subject updated'); loadSubjects();
+}
+async function delSubject(id,name) {
+  if(!confirm(`Delete subject "${name}"?\nThis will also delete all its chapters and questions.`)) return;
+  await api('/api/admin/subjects/'+id,{method:'DELETE'});
+  toast('Subject deleted'); loadSubjects();
 }
 
+// ── Chapters ──────────────────────────────────────────────────────────────────
+async function loadChapters() {
+  const id=document.getElementById('ch-sub-id').value;
+  if(!id){toast('Enter subject ID',false);return;}
+  const d=await api('/api/admin/chapters/'+id);
+  const el=document.getElementById('chapters-tbl');
+  if(!d?.chapters?.length){el.innerHTML='<div class="empty-state">No chapters found</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>ID</th><th>Name</th><th>Free Q</th><th>Premium Q</th><th>Actions</th></tr></thead><tbody>
+    ${d.chapters.map(c=>`<tr>
+      <td><code style="background:#F3F4F6;padding:2px 6px;border-radius:4px;font-size:11px">${c.id}</code></td>
+      <td><strong>${c.name}</strong></td>
+      <td>${c.free_q||0}</td><td>${c.premium_q||0}</td>
+      <td style="display:flex;gap:4px">
+        <button class="btn btn-secondary btn-xs" onclick="editChapter(${c.id},'${c.name.replace(/'/g,"\\'")}')">✏️</button>
+        <button class="btn btn-danger btn-xs" onclick="delChapter(${c.id},'${c.name.replace(/'/g,"\\'")}')">🗑</button>
+      </td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
 async function addChapter() {
-  const subjectId=parseInt(document.getElementById('ch-subject').value);
-  const name=document.getElementById('ch-name').value.trim();
-  if(!subjectId||!name){alert('Subject ID and name required');return;}
-  const r = await api('/api/admin/chapters',{method:'POST',body:JSON.stringify({subject_id:subjectId,name})});
-  if(r?.success){document.getElementById('ch-name').value='';alert('Chapter added!');}
-  else{alert(r?.error||'Failed');}
+  const sub=parseInt(document.getElementById('chsub').value);
+  const name=document.getElementById('chname').value.trim();
+  if(!sub||!name){toast('Subject ID and name required',false);return;}
+  const r=await api('/api/admin/chapters',{method:'POST',body:JSON.stringify({subject_id:sub,name})});
+  if(r?.success){toast('Chapter added!');document.getElementById('chname').value='';}
+  else toast(r?.error||'Failed',false);
+}
+async function editChapter(id,name) {
+  const n=prompt('Chapter name:',name); if(!n) return;
+  await api('/api/admin/chapters/'+id,{method:'PUT',body:JSON.stringify({name:n})});
+  toast('Chapter updated'); loadChapters();
+}
+async function delChapter(id,name) {
+  if(!confirm(`Delete chapter "${name}" and all its questions?`)) return;
+  await api('/api/admin/chapters/'+id,{method:'DELETE'});
+  toast('Chapter deleted'); loadChapters();
 }
 
+// ── Questions ─────────────────────────────────────────────────────────────────
+async function loadQuestions() {
+  const id=document.getElementById('q-ch-id').value;
+  if(!id){toast('Enter chapter ID',false);return;}
+  const d=await api('/api/admin/questions/'+id);
+  const el=document.getElementById('questions-tbl');
+  if(!d?.questions?.length){el.innerHTML='<div class="empty-state">No questions found</div>';return;}
+  el.innerHTML=`<div class="tbl-wrap"><table><thead><tr><th>#</th><th>Question</th><th>A</th><th>B</th><th>C</th><th>D</th><th>Ans</th><th>Type</th><th>Diff</th><th>Actions</th></tr></thead><tbody>
+    ${d.questions.map((q,i)=>`<tr>
+      <td>${i+1}</td>
+      <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${q.question_text}">${q.question_text}</td>
+      <td>${q.option_a||''}</td><td>${q.option_b||''}</td><td>${q.option_c||''}</td><td>${q.option_d||''}</td>
+      <td><strong>${q.correct_answer}</strong></td>
+      <td><span class="badge ${q.is_premium?'b-gold':'b-gray'}">${q.is_premium?'⭐':'Free'}</span></td>
+      <td>${q.difficulty||'medium'}</td>
+      <td><button class="btn btn-danger btn-xs" onclick="delQuestion(${q.id})">🗑</button></td>
+    </tr>`).join('')}
+  </tbody></table></div>`;
+}
 async function addQuestion() {
-  const chapter_id=parseInt(document.getElementById('q-chapter').value);
-  const question_text=document.getElementById('q-text').value.trim();
-  const option_a=document.getElementById('q-a').value.trim();
-  const option_b=document.getElementById('q-b').value.trim();
-  const option_c=document.getElementById('q-c').value.trim();
-  const option_d=document.getElementById('q-d').value.trim();
-  const correct_answer=document.getElementById('q-correct').value;
-  const is_premium=parseInt(document.getElementById('q-premium').value);
-  if(!chapter_id||!question_text||!option_a||!option_b||!option_c||!option_d){alert('All fields required');return;}
-  const r = await api('/api/admin/questions',{method:'POST',body:JSON.stringify({chapter_id,question_text,option_a,option_b,option_c,option_d,correct_answer,is_premium,type:'mcq'})});
-  if(r?.success){['q-text','q-a','q-b','q-c','q-d'].forEach(id=>document.getElementById(id).value='');alert('Question added!');}
-  else{alert(r?.error||'Failed');}
+  const chapter_id=parseInt(document.getElementById('qch').value);
+  const question_text=document.getElementById('qtext').value.trim();
+  const option_a=document.getElementById('qa').value.trim();
+  const option_b=document.getElementById('qb').value.trim();
+  const option_c=document.getElementById('qc').value.trim();
+  const option_d=document.getElementById('qd').value.trim();
+  const correct_answer=document.getElementById('qans').value;
+  const is_premium=parseInt(document.getElementById('qprem').value);
+  const difficulty=document.getElementById('qdiff').value;
+  if(!chapter_id||!question_text||!option_a||!option_b){toast('Chapter ID and options A/B required',false);return;}
+  const r=await api('/api/admin/questions',{method:'POST',body:JSON.stringify({chapter_id,question_text,option_a,option_b,option_c:option_c||null,option_d:option_d||null,correct_answer,is_premium,difficulty})});
+  if(r?.success){toast('Question added!');['qtext','qa','qb','qc','qd'].forEach(id=>document.getElementById(id).value='');}
+  else toast(r?.error||'Failed',false);
+}
+async function delQuestion(id) {
+  if(!confirm('Delete this question?')) return;
+  await api('/api/admin/questions/'+id,{method:'DELETE'});
+  toast('Question deleted'); loadQuestions();
+}
+
+// ── Bulk Import ───────────────────────────────────────────────────────────────
+async function bulkImport() {
+  const ch=parseInt(document.getElementById('bulk-ch').value);
+  const raw=document.getElementById('bulk-json').value.trim();
+  if(!ch){toast('Chapter ID required',false);return;}
+  let questions;
+  try { questions=JSON.parse(raw); } catch(e){ toast('Invalid JSON: '+e.message,false); return; }
+  if(!Array.isArray(questions)){toast('Must be a JSON array',false);return;}
+  const r=await api('/api/admin/questions/bulk',{method:'POST',body:JSON.stringify({chapter_id:ch,questions})});
+  const el=document.getElementById('bulk-result');
+  if(r?.success){el.innerHTML=`<div class="alert alert-success">✅ Imported ${r.added} questions successfully!</div>`;}
+  else{el.innerHTML=`<div class="alert alert-error">❌ ${r?.error||'Import failed'}</div>`;}
+}
+function bulkTemplate() {
+  return JSON.stringify([{question_text:"What is 2+2?",option_a:"3",option_b:"4",option_c:"5",option_d:"6",correct_answer:"B",is_premium:0,difficulty:"easy"},{question_text:"Capital of India?",option_a:"Mumbai",option_b:"Delhi",option_c:"Chennai",option_d:"Kolkata",correct_answer:"B",is_premium:0,difficulty:"easy"}],null,2);
+}
+
+// ── Banners ───────────────────────────────────────────────────────────────────
+async function loadBanners() {
+  const d=await api('/api/admin/banners');
+  const el=document.getElementById('banners-list');
+  if(!d?.banners?.length){el.innerHTML='<div class="empty-state">No banners yet. Click "+ New Banner" to create one.</div>';return;}
+  el.innerHTML=d.banners.map(b=>`
+    <div class="card" style="border-left:4px solid ${b.bg_color}">
+      <div style="display:flex;gap:16px;align-items:center">
+        <div class="banner-preview" style="background:${b.bg_color};color:${b.text_color};flex:1;min-height:60px">
+          <h3 style="font-size:15px">${b.title}</h3>
+          ${b.subtitle?`<p>${b.subtitle}</p>`:''}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0">
+          <span class="badge ${b.is_active?'b-green':'b-gray'}">${b.is_active?'Active':'Inactive'}</span>
+          <button class="btn btn-secondary btn-xs" onclick="editBanner(${b.id})">✏️ Edit</button>
+          <button class="btn ${b.is_active?'btn-warn':'btn-success'} btn-xs" onclick="toggleBanner(${b.id},${b.is_active?0:1})">${b.is_active?'Deactivate':'Activate'}</button>
+          <button class="btn btn-danger btn-xs" onclick="delBanner(${b.id})">🗑 Delete</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+function openBannerForm(banner=null) {
+  editingBannerId=banner?banner.id:null;
+  document.getElementById('banner-form-title').textContent=banner?'Edit Banner':'New Banner';
+  document.getElementById('b-title').value=banner?.title||'';
+  document.getElementById('b-sub').value=banner?.subtitle||'';
+  document.getElementById('b-img').value=banner?.image_url||'';
+  document.getElementById('b-atype').value=banner?.action_type||'none';
+  document.getElementById('b-aval').value=banner?.action_value||'';
+  document.getElementById('b-bg').value=banner?.bg_color||'#1B3A6B';
+  document.getElementById('b-bg-txt').value=banner?.bg_color||'#1B3A6B';
+  document.getElementById('b-tc').value=banner?.text_color||'#ffffff';
+  document.getElementById('b-tc-txt').value=banner?.text_color||'#ffffff';
+  document.getElementById('b-active').value=banner?.is_active!=null?banner.is_active:1;
+  document.getElementById('banner-form').style.display='block';
+  updateBannerPreview();
+  document.getElementById('banner-form').scrollIntoView({behavior:'smooth'});
+}
+function closeBannerForm() { document.getElementById('banner-form').style.display='none'; editingBannerId=null; }
+function updateBannerPreview() {
+  const bg=document.getElementById('b-bg-txt').value||'#1B3A6B';
+  const tc=document.getElementById('b-tc-txt').value||'#ffffff';
+  const title=document.getElementById('b-title').value||'Banner Title';
+  const sub=document.getElementById('b-sub').value||'Subtitle text';
+  const box=document.getElementById('banner-preview-box');
+  box.style.background=bg; box.style.color=tc;
+  document.getElementById('bp-title').textContent=title;
+  document.getElementById('bp-sub').textContent=sub;
+}
+async function saveBanner() {
+  const body={
+    title:document.getElementById('b-title').value.trim(),
+    subtitle:document.getElementById('b-sub').value.trim()||null,
+    image_url:document.getElementById('b-img').value.trim()||null,
+    action_type:document.getElementById('b-atype').value,
+    action_value:document.getElementById('b-aval').value.trim()||null,
+    bg_color:document.getElementById('b-bg-txt').value,
+    text_color:document.getElementById('b-tc-txt').value,
+    is_active:parseInt(document.getElementById('b-active').value),
+  };
+  if(!body.title){toast('Title required',false);return;}
+  const r = editingBannerId
+    ? await api('/api/admin/banners/'+editingBannerId,{method:'PUT',body:JSON.stringify(body)})
+    : await api('/api/admin/banners',{method:'POST',body:JSON.stringify(body)});
+  if(r?.success){toast(editingBannerId?'Banner updated!':'Banner created!');closeBannerForm();loadBanners();}
+  else toast(r?.error||'Failed',false);
+}
+async function editBanner(id) {
+  const d=await api('/api/admin/banners');
+  const banner=d?.banners?.find(b=>b.id===id);
+  if(banner) openBannerForm(banner);
+}
+async function toggleBanner(id,val) {
+  await api('/api/admin/banners/'+id,{method:'PUT',body:JSON.stringify({is_active:val})});
+  toast(val?'Banner activated':'Banner deactivated'); loadBanners();
+}
+async function delBanner(id) {
+  if(!confirm('Delete this banner?')) return;
+  await api('/api/admin/banners/'+id,{method:'DELETE'});
+  toast('Banner deleted'); loadBanners();
+}
+
+// ── Theme ─────────────────────────────────────────────────────────────────────
+async function loadTheme() {
+  const d=await api('/api/admin/settings');
+  const theme=d?.settings?.theme||defaultTheme;
+  const appName=d?.settings?.appName||'Study Sikkim';
+  const tagline=d?.settings?.tagline||'Learn · Practice · Excel';
+  const email=d?.settings?.supportEmail||'';
+  document.getElementById('app-name').value=appName;
+  document.getElementById('app-tagline').value=tagline;
+  document.getElementById('support-email').value=email;
+  const el=document.getElementById('theme-colors');
+  el.innerHTML=Object.entries(themeLabels).map(([key,label])=>`
+    <div class="fg" style="margin-bottom:12px">
+      <label>${label}</label>
+      <div class="color-row">
+        <input type="color" id="tc-${key}" value="${theme[key]||defaultTheme[key]}" oninput="document.getElementById('tt-${key}').value=this.value;renderThemePreview()"/>
+        <input id="tt-${key}" value="${theme[key]||defaultTheme[key]}" style="flex:1" oninput="document.getElementById('tc-${key}').value=this.value;renderThemePreview()"/>
+      </div>
+    </div>`).join('');
+  renderThemePreview();
+}
+function renderThemePreview() {
+  const get=k=>document.getElementById('tt-'+k)?.value||defaultTheme[k];
+  document.getElementById('theme-preview').innerHTML=`
+    <div style="border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,.12)">
+      <div style="background:${get('primary')};color:#fff;padding:16px">
+        <div style="font-size:13px;font-weight:900">Study Sikkim</div>
+        <div style="font-size:11px;opacity:.7;margin-top:2px">App Header</div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700">📊 3 Quizzes</div>
+          <div style="background:rgba(255,255,255,.15);border-radius:8px;padding:8px 12px;font-size:11px;font-weight:700">✓ 24 Correct</div>
+        </div>
+      </div>
+      <div style="background:#F4F6F9;padding:16px">
+        <div style="background:#fff;border-radius:10px;padding:12px;border-left:4px solid ${get('primary')};margin-bottom:8px;display:flex;align-items:center;gap:10px">
+          <div style="width:36px;height:36px;background:${get('primary')}20;border-radius:8px"></div>
+          <div><div style="font-size:13px;font-weight:700">Mathematics</div><div style="font-size:11px;color:#9CA3AF">5 chapters</div></div>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <div style="flex:1;background:${get('primary')};color:#fff;border-radius:8px;padding:10px;text-align:center;font-size:12px;font-weight:700">Start Quiz</div>
+          <div style="flex:1;background:${get('accent')};color:#fff;border-radius:8px;padding:10px;text-align:center;font-size:12px;font-weight:700">⭐ Upgrade</div>
+        </div>
+        <div style="background:${get('premium')}15;border:1px solid ${get('premium')}40;border-radius:8px;padding:10px;margin-top:8px;display:flex;align-items:center;gap:8px">
+          <span style="color:${get('premiumGold')}">⭐</span>
+          <span style="font-size:12px;font-weight:700;color:${get('premium')}">Premium Member</span>
+        </div>
+      </div>
+    </div>`;
+}
+async function saveTheme() {
+  const theme={};
+  Object.keys(themeLabels).forEach(k=>theme[k]=document.getElementById('tt-'+k)?.value||defaultTheme[k]);
+  const body={
+    theme,
+    appName:document.getElementById('app-name').value||'Study Sikkim',
+    tagline:document.getElementById('app-tagline').value||'Learn · Practice · Excel',
+    supportEmail:document.getElementById('support-email').value||'',
+  };
+  const r=await api('/api/admin/settings',{method:'PUT',body:JSON.stringify(body)});
+  if(r?.success) toast('Theme saved!'); else toast('Failed to save',false);
+}
+function resetTheme() {
+  Object.entries(defaultTheme).forEach(([k,v])=>{
+    const tc=document.getElementById('tc-'+k); const tt=document.getElementById('tt-'+k);
+    if(tc) tc.value=v; if(tt) tt.value=v;
+  });
+  renderThemePreview();
+  toast('Reset to defaults');
+}
+
+// ── Announcements ─────────────────────────────────────────────────────────────
+async function loadAnnouncements() {
+  const d=await api('/api/admin/announcements');
+  const el=document.getElementById('ann-list');
+  if(!d?.announcements?.length){el.innerHTML='<div class="empty-state">No announcements yet</div>';return;}
+  el.innerHTML=d.announcements.map(a=>`
+    <div class="ann-item">
+      <span class="ann-type t-${a.type}">${a.type.toUpperCase()}</span>
+      <div style="flex:1">
+        <div style="font-weight:700;font-size:13px">${a.title}</div>
+        <div style="font-size:12px;color:#4B5563;margin-top:2px">${a.body}</div>
+        ${a.target_class?`<span class="badge b-blue" style="margin-top:4px">Class ${a.target_class} only</span>`:''}
+      </div>
+      <button class="btn btn-danger btn-xs" onclick="delAnn(${a.id})">🗑</button>
+    </div>`).join('');
+}
+async function addAnnouncement() {
+  const title=document.getElementById('ann-title').value.trim();
+  const body=document.getElementById('ann-body').value.trim();
+  const type=document.getElementById('ann-type').value;
+  const cls=document.getElementById('ann-class').value||null;
+  if(!title||!body){toast('Title and message required',false);return;}
+  const r=await api('/api/admin/announcements',{method:'POST',body:JSON.stringify({title,body,type,target_class:cls?parseInt(cls):null})});
+  if(r?.success){toast('Announcement published!');document.getElementById('ann-title').value='';document.getElementById('ann-body').value='';loadAnnouncements();}
+  else toast(r?.error||'Failed',false);
+}
+async function delAnn(id) {
+  await api('/api/admin/announcements/'+id,{method:'DELETE'});
+  toast('Deleted'); loadAnnouncements();
+}
+
+// ── Settings ──────────────────────────────────────────────────────────────────
+async function changePassword() {
+  const cur=document.getElementById('cp-cur').value;
+  const nw=document.getElementById('cp-new').value;
+  const conf=document.getElementById('cp-conf').value;
+  const msg=document.getElementById('cp-msg');
+  if(!cur||!nw){msg.innerHTML='<div class="alert alert-error">All fields required</div>';return;}
+  if(nw!==conf){msg.innerHTML='<div class="alert alert-error">New passwords do not match</div>';return;}
+  if(nw.length<6){msg.innerHTML='<div class="alert alert-error">Min 6 characters</div>';return;}
+  const r=await api('/api/admin/change-password',{method:'PUT',body:JSON.stringify({current_password:cur,new_password:nw})});
+  if(r?.success){msg.innerHTML='<div class="alert alert-success">Password updated successfully!</div>';['cp-cur','cp-new','cp-conf'].forEach(id=>document.getElementById(id).value='');}
+  else msg.innerHTML=`<div class="alert alert-error">${r?.error||'Failed'}</div>`;
 }
 </script>
 </body>

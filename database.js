@@ -155,6 +155,39 @@ async function initSchema() {
       password_hash TEXT NOT NULL
     )
   `);
+  database.run(`
+    CREATE TABLE IF NOT EXISTS banners (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      subtitle TEXT,
+      image_url TEXT,
+      action_type TEXT DEFAULT 'none',
+      action_value TEXT,
+      bg_color TEXT DEFAULT '#1B3A6B',
+      text_color TEXT DEFAULT '#ffffff',
+      is_active INTEGER DEFAULT 1,
+      order_num INTEGER DEFAULT 0,
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `);
+  database.run(`
+    CREATE TABLE IF NOT EXISTS app_settings (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL,
+      updated_at TEXT DEFAULT (datetime('now'))
+    )
+  `);
+  database.run(`
+    CREATE TABLE IF NOT EXISTS announcements (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      title TEXT NOT NULL,
+      body TEXT NOT NULL,
+      type TEXT DEFAULT 'info',
+      is_active INTEGER DEFAULT 1,
+      target_class INTEGER,
+      created_at TEXT DEFAULT (datetime('now'))
+    )
+  `);
   saveDb();
 }
 

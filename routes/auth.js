@@ -84,12 +84,37 @@ router.get('/me', authMiddleware, async (req, res) => {
 
 router.put('/update-class', authMiddleware, async (req, res) => {
   const { class_level } = req.body;
-  if (!class_level || class_level < 3 || class_level > 12) {
+  if (!class_level || class_level < 3 || class_level > 12)
     return res.status(400).json({ error: 'Invalid class level' });
-  }
   const db = await getDb();
   const { run: dbRun, saveDb } = require('../database');
   dbRun(db, 'UPDATE students SET class_level = ? WHERE id = ?', [class_level, req.student.id]);
+  saveDb();
+  res.json({ success: true });
+});
+
+router.put('/profile', authMiddleware, async (req, res) => {
+  const { name, phone, school } = req.body;
+  const db = await getDb();
+  const { run: dbRun, saveDb, get: dbGet } = require('../database');
+  dbRun(db, 'UPDATE students SET name=COALESCE(?,name), phone=COALESCE(?,phone), school=COALESCE(?,school) WHERE id=?',
+    [name||null, phone||null, school||null, req.student.id]);
+  saveDb();
+  const student = dbGet(db, 'SELECT id,name,email,phone,school,class_level,is_premium,premium_expires_at FROM students WHERE id=?', [req.student.id]);
+  res.json({ success: true, student });
+});
+
+router.put('/change-password', authMiddleware, async (req, res) => {
+  const { current_password, new_password } = req.body;
+  if (!current_password || !new_password || new_password.length < 6)
+    return res.status(400).json({ error: 'Current password and new password (min 6 chars) required' });
+  const db = await getDb();
+  const student = get(db, 'SELECT * FROM students WHERE id = ?', [req.student.id]);
+  const match = await bcrypt.compare(current_password, student.password_hash);
+  if (!match) return res.status(401).json({ error: 'Current password is incorrect' });
+  const hash = await bcrypt.hash(new_password, 10);
+  const { run: dbRun, saveDb } = require('../database');
+  dbRun(db, 'UPDATE students SET password_hash = ? WHERE id = ?', [hash, req.student.id]);
   saveDb();
   res.json({ success: true });
 });
